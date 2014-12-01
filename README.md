@@ -1,102 +1,25 @@
-# ivy-codemirror
+# Ivy-codemirror
 
-[![Build Status](https://travis-ci.org/IvyApp/ivy-codemirror.svg?branch=master)](https://travis-ci.org/IvyApp/ivy-codemirror)
-
-An [Ember][1] component for the excellent [CodeMirror][2] editor.
+This README outlines the details of collaborating on this Ember addon.
 
 ## Installation
 
-```sh
-$ npm install ivy-codemirror
-```
+* `git clone` this repository
+* `npm install`
+* `bower install`
 
-or...
+## Running
 
-```sh
-$ bower install ivy-codemirror
-```
+* `ember server`
+* Visit your app at http://localhost:4200.
 
-Then include the script(s) into your application.
+## Running Tests
 
-### npm + browserify
+* `ember test`
+* `ember test --server`
 
-```js
-require('ivy-codemirror');
-```
+## Building
 
-### amd
+* `ember build`
 
-Register `ivy-codemirror` as a [package][3], then:
-
-```js
-define(['ivy-codemirror'], ...)
-```
-
-### named-amd
-
-You ought to know what you're doing if this is the case.
-
-### globals
-
-```html
-<script src="bower_components/ivy-codemirror/dist/globals/main.js"></script>
-```
-
-You'll also need to install the initializer to make the `ivy-codemirror`
-component available in your templates:
-
-```js
-App = Ember.Application.create(/* ... */);
-App.initializer(ivy.codemirror.initializer);
-```
-
-## Usage
-
-```handlebars
-{{ivy-codemirror value=myCode}}
-```
-
-There are also a handful of [CodeMirror options][4] you can bind to as well:
-
-  * `autofocus`
-  * `coverGutterNextToScrollbar`
-  * `electricChars`
-  * `extraKeys`
-  * `firstLineNumber`
-  * `fixedGutter`
-  * `historyEventDelay`
-  * `indentUnit`
-  * `indentWithTabs`
-  * `keyMap`
-  * `lineNumbers`
-  * `lineWrapping`
-  * `mode`
-  * `readOnly`
-  * `rtlMoveVisually`
-  * `showCursorWhenSelecting`
-  * `smartIndent`
-  * `tabSize`
-  * `tabindex`
-  * `theme`
-  * `undoDepth`
-
-## Contributing
-
-```sh
-$ git clone # <this repo>
-$ npm install
-$ npm test
-
-# during dev
-$ broccoli serve
-# new tab
-$ testem
-```
-
-Fork this repo, make a new branch, and send a pull request. Make sure your
-change is tested or it won't be merged.
-
-[1]: http://emberjs.com
-[2]: http://codemirror.net
-[3]: http://requirejs.org/docs/api.html#packages
-[4]: http://codemirror.net/doc/manual.html#config
+For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
