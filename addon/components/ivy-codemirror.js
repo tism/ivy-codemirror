@@ -34,6 +34,9 @@ export default Ember.Component.extend({
   undoDepth: 200,
   lint: false,
   gutters: [],
+  viewportMargin: 10,
+  width: null,
+  height: null,
 
   lintChanged: function() {
     Ember.run.debounce(this, 'updateLintGutter', 250);
@@ -57,6 +60,14 @@ export default Ember.Component.extend({
         this.codeMirror.setOption('gutters', updatedGutters);
       }
     }
+  },
+
+  sizeChanged: function() {
+    Ember.run.debounce(this, 'updateSize', 250);
+  }.observes('width', 'height'),
+
+  updateSize: function() {
+    this.codeMirror.setSize(this.get("width"), this.get("height"));
   },
 
   tagName: 'textarea',
@@ -111,7 +122,9 @@ export default Ember.Component.extend({
     // Force a refresh on `becameVisible`, since CodeMirror won't render itself
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
+
     this.updateLintGutter();
+    this.updateSize();
   }),
 
   /**
