@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   electricChars: true,
   extraKeys: null,
   firstLineNumber: 1,
-  fixedGutter: true,
+  fixedGutter: false,
   historyEventDelay: 1250,
   indentUnit: 2,
   indentWithTabs: false,
@@ -32,6 +32,32 @@ export default Ember.Component.extend({
   tabindex: null,
   theme: 'default',
   undoDepth: 200,
+  lint: false,
+  gutters: [],
+
+  lintChanged: function() {
+    Ember.run.debounce(this, 'updateLintGutter', 250);
+  }.observes('lint'),
+
+  updateLintGutter: function() {
+    var lintGutterClass = "CodeMirror-lint-markers";
+
+    if (this.get('lint')) {
+      this.codeMirror.setOption('gutters', [lintGutterClass].concat(this.get('gutters')));
+      this.codeMirror.setOption('lint', true);
+    }
+    else {
+      var currentGutters = this.get('gutters');
+      var index = currentGutters.indexOf(lintGutterClass);
+      var updatedGutters = currentGutters;
+
+      this.codeMirror.setOption('lint', false);
+      if (index >= 0) {
+        updatedGutters = currentGutters.splice(index, 1);
+        this.codeMirror.setOption('gutters', updatedGutters);
+      }
+    }
+  },
 
   tagName: 'textarea',
 
@@ -76,12 +102,16 @@ export default Ember.Component.extend({
     this._bindCodeMirrorOption('theme');
     this._bindCodeMirrorOption('undoDepth');
 
+    // Force a refresh when the gutters property changes
+    this._bindCodeMirrorProperty('gutters', this, 'refresh');
+
     this._bindCodeMirrorProperty('value', this, '_valueDidChange');
     this._valueDidChange();
 
     // Force a refresh on `becameVisible`, since CodeMirror won't render itself
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
+    this.updateLintGutter();
   }),
 
   /**
