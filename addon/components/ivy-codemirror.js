@@ -88,6 +88,7 @@ export default Ember.Component.extend({
     this.set('codeMirror', codeMirror);
 
     // Set up handlers for CodeMirror events.
+    this._bindCodeMirrorEvent('beforeChange', this, '_beforeUpdateValue');
     this._bindCodeMirrorEvent('change', this, '_updateValue');
 
     // Set up bindings for CodeMirror options.
@@ -187,7 +188,12 @@ export default Ember.Component.extend({
   _updateValue: function(instance) {
     var value = instance.getValue();
     this.set('value', value);
-    this.sendAction('valueUpdated', value);
+    this.get('targetObject').sendAction('valueDidChange', this.get('targetObject'), value);
+  },
+
+  _beforeUpdateValue: function(instance) {
+    var value = instance.getValue();
+    this.get('targetObject').sendAction('valueWillChange', this.get('targetObject'), value);
   },
 
   _valueDidChange: function() {
