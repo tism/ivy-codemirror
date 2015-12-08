@@ -81,17 +81,22 @@ export default Ember.Component.extend({
     this.get('codeMirror').refresh();
   },
 
-  _initCodemirror: Ember.on('didInsertElement', function() {
+  _initCodeMirror: Ember.on('didInsertElement', function() {
+    this._createCodeMirror();
+    this._bindEvents();
+    this._bindOptions();
+    this._bindProperties();
+    this._triggerUpdates();
+  }),
+  _createCodeMirror() {
     var codeMirror = CodeMirror.fromTextArea(this.get('element'));
-
-    // Stash away the CodeMirror instance.
     this.set('codeMirror', codeMirror);
-
-    // Set up handlers for CodeMirror events.
+  },
+  _bindEvents() {
     this._bindCodeMirrorEvent('beforeChange', this, '_beforeUpdateValue');
     this._bindCodeMirrorEvent('change', this, '_updateValue');
-
-    // Set up bindings for CodeMirror options.
+  },
+  _bindOptions() {
     this._bindCodeMirrorOption('autofocus');
     this._bindCodeMirrorOption('coverGutterNextToScrollbar');
     this._bindCodeMirrorOption('electricChars');
@@ -113,20 +118,20 @@ export default Ember.Component.extend({
     this._bindCodeMirrorOption('tabindex');
     this._bindCodeMirrorOption('theme');
     this._bindCodeMirrorOption('undoDepth');
-
-    // Force a refresh when the gutters property changes
+  },
+  _bindProperties() {
     this._bindCodeMirrorProperty('gutters', this, 'refresh');
-
     this._bindCodeMirrorProperty('value', this, '_valueDidChange');
     this._valueDidChange();
-
+  },
+  _triggerUpdates() {
     // Force a refresh on `becameVisible`, since CodeMirror won't render itself
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
 
     this.updateLintGutter();
     this.updateSize();
-  }),
+  },
 
   /**
    * Bind a handler for `event`, to be torn down in `willDestroyElement`.
