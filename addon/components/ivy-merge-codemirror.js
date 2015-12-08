@@ -33,6 +33,10 @@ export default IvyCodeMirror.extend({
     this.set('rightOriginal', rightOriginal);
 
     this.set('codeMirror', edit);
+
+    // codemirror.mergeview doesn't attach the merge view to the dom like it
+    // does with each pane's codemirror instance, so do it here
+    this.$().find('.CodeMirror-merge')[0].CodeMirrorMerge = mergeCodeMirror;
   },
   _bindOptions() {
     // all the options will now be set on the codeMirror instance (the 'middle' one)
